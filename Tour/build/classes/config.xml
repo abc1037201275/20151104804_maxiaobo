@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+<!-- 属性参数 -->
+<properties resource="jdbc.properties">
+
+</properties>
+<!-- 开启缓存 -->
+<settings>
+	<setting name="cacheEnabled" value="true"/>
+</settings>
+<!-- 别名的优化 -->
+<!-- <typeAles>
+	<typeAlias type="com.aliali.entity.ManagerEntity" alias="ManagerEntity"/>
+</typeAliases> -->
+<!-- 设置框架的工作模式development，是开发模式。work是工作模式 -->
+
+	<environments default="development">
+		<environment id="development">
+			<!-- 指定事物的管理，手动方式 -->
+			<transactionManager type="jdbc"></transactionManager>
+			<!-- 配置数据源 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driverClassName}"/>
+				<property name="url" value="${jdbc.url}"/>
+				<property name="username" value="${jdbc.username}"/>
+				<property name="password" value="${jdbc.password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/nmg/dao/JingdianMapper.xml"/>
+		<mapper resource="com/nmg/dao/UserMapper.xml"/>
+		<mapper resource="com/nmg/dao/XianluMapper.xml"/>
+		<mapper resource="com/nmg/dao/HotelMapper.xml"/>
+		<mapper resource="com/nmg/dao/ReshotelMapper.xml"/>
+		<mapper resource="com/nmg/dao/GonggaoMapper.xml"/>
+		<mapper resource="com/nmg/dao/ManagerMapper.xml"/>
+		<mapper resource="com/nmg/dao/LiuyanMapper.xml"/>
+	</mappers>
+
+</configuration>
