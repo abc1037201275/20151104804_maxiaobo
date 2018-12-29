@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.UserDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+<select id="selectUserBeanList" resultType="com.nmg.entity.User">
+   select * from t_user order by id desc
+</select>
+
+<insert id="insertUserBean" parameterType="com.nmg.entity.User">
+insert into t_user(id,username,password,truename,telephone,jiguan,address,xingbie,age,email,createtime,userlock) values(#{id},#{username},#{password},#{truename},#{telephone},#{jiguan},#{address},#{xingbie},#{age},#{email},now(),0)
+</insert>
+
+<delete id="deleteUserBean" parameterType="com.nmg.entity.User">
+delete from t_user where id = #{id}
+</delete>
+
+<update id="updateUserBean" parameterType="com.nmg.entity.User">
+update t_user set id=#{id},username=#{username},password=#{password},truename=#{truename},telephone=#{telephone},jiguan=#{jiguan},address=#{address},xingbie=#{xingbie},age=#{age},email=#{email} where id=#{id}
+</update>
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectUserBeanCount" resultType="long">
+	select count(*) from t_user
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectUserBean" parameterType="com.nmg.entity.User" resultType="com.nmg.entity.User">
+   select * from t_user where username=#{username} and password=#{password}
+</select>
+	<!-- 检测账户存在 -->
+	<select id="selectUsernameBean" parameterType="String" resultType="int">
+		select count(*) from t_user where username=#{username}
+	</select>
+</mapper>
