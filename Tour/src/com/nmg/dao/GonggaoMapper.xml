@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.GonggaoDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+<select id="selectGonggaoBeanList" resultType="com.nmg.entity.Gonggao">
+   select * from t_gonggao order by id desc
+</select>
+
+<insert id="insertGonggaoBean" parameterType="com.nmg.entity.Gonggao">
+insert into t_gonggao(id,biaoti,content,createtime,gonggaolock) values(#{id},#{biaoti},#{content},now(),#{gonggaolock})
+</insert>
+
+<delete id="deleteGonggaoBean" parameterType="com.nmg.entity.Gonggao">
+delete from t_gonggao where id = #{id}
+</delete>
+
+<update id="updateGonggaoBean" parameterType="com.nmg.entity.Gonggao">
+update t_gonggao set id=#{id},biaoti=#{biaoti},createtime=now(),content=#{content},gonggaolock=#{gonggaolock} where id=#{id}
+</update>
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectGonggaoBeanCount" resultType="long">
+	select count(*) from t_gonggao
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectGonggaoBean" parameterType="String" resultType="com.nmg.entity.Gonggao">
+   select * from t_gonggao where id=#{id}
+</select>
+
+</mapper>
