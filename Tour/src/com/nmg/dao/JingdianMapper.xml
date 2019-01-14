@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.JingdianDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+<select id="selectBeanList" resultType="com.nmg.entity.Jingdian">
+   select * from t_jingdian order by id desc 
+</select>
+
+<insert id="insertBean" parameterType="com.nmg.entity.Jingdian">
+insert into t_jingdian(id,content,createtime,imgpath,jingdianlock,name) values(#{id},#{content},now(),#{imgpath},#{jingdianlock},#{name})
+</insert>
+
+<delete id="deleteBean" parameterType="com.nmg.entity.Jingdian">
+delete from t_jingdian where id = #{id}
+</delete>
+
+<update id="updateBean" parameterType="com.nmg.entity.Jingdian">
+update t_jingdian set id=#{id},content=#{content},createtime=now(),imgpath=#{imgpath},jingdianlock=#{jingdianlock},name=#{name} where id=#{id}
+</update>
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectBeanCount" resultType="long">
+	select count(*) from t_jingdian
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectBean" parameterType="String" resultType="com.nmg.entity.Jingdian">
+   select * from t_jingdian where id=#{id}
+</select>
+
+</mapper>
