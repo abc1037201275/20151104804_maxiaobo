@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.HotelDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+<select id="selectHotelBeanList" resultType="com.nmg.entity.Hotel">
+   select * from t_hotel order by id desc
+</select>
+
+<insert id="insertHotelBean" parameterType="com.nmg.entity.Hotel">
+insert into t_hotel(id,imgpath,name,price,tel,address,content,createtime,hotellock) 
+values(#{id},#{imgpath},#{name},#{price},#{tel},#{address},#{content},now(),#{hotellock})
+</insert>
+
+<delete id="deleteHotelBean" parameterType="com.nmg.entity.Hotel">
+delete from t_hotel where id = #{id}
+</delete>
+
+<update id="updateHotelBean" parameterType="com.nmg.entity.Hotel">
+update t_hotel set id=#{id},imgpath=#{imgpath},name=#{name},price=#{price},
+tel=#{tel},address=#{address},content=#{content},hotellock=#{hotellock} where id=#{id}
+</update>
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectHotelBeanCount" resultType="long">
+	select count(*) from t_hotel
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectHotelBean" parameterType="com.nmg.entity.Hotel" resultType="com.nmg.entity.Hotel">
+   select * from t_hotel where id=#{id}
+</select>
+	<!-- 检测账户存在 -->
+
+</mapper>
