@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.ReshotelDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+	<resultMap type="com.nmg.entity.Reshotel" id="reshotel">
+		<id property="id" column="id" />
+			<result property="numer" column="numer" />
+		<result property="times" column="times" />
+		<result property="heji" column="heji" />
+		<result property="createtime" column="createtime" />
+		<result property="reshotellock" column="reshotellock" />
+		<association property="hotel" javaType="com.nmg.entity.Hotel">
+			<id column="hotelid" property="id" />
+			<id column="name" property="name" />
+			<id column="price" property="price" />
+			<id column="address" property="address" />
+		</association>
+		<association property="user" javaType="com.nmg.entity.User">
+			<id column="userid" property="id" />
+			<result column="username" property="username" />
+		</association>
+
+	</resultMap>
+<select id="selectReshotelBeanList" resultMap="reshotel">
+  select c.*,d.username
+from 
+(select a.*,b.name,b.price,b.address
+from t_reshotel a left outer join
+t_hotel b on a.hotelid=b.id) c
+left outer join t_user d
+on c.userid=d.id order by id desc
+</select> 
+
+<select id="selectReshotelBeanListByUid" resultMap="reshotel">
+  select c.*,d.username
+from 
+(select a.*,b.name,b.price,b.address
+from t_reshotel a left outer join
+t_hotel b on a.hotelid=b.id) c
+left outer join t_user d
+on c.userid=d.id where c.userid=#{user.id}
+</select>
+
+<insert id="insertReshotelBean" parameterType="com.nmg.entity.Reshotel">
+insert into t_reshotel(id,createtime,heji,numer,reshotellock,times,hotelid,userid) 
+values(#{id},now(),#{heji},#{numer},0,#{times},#{hotel.id},#{user.id})
+</insert> 
+
+<delete id="deleteReshotelBean" parameterType="com.nmg.entity.Reshotel">
+delete from t_reshotel where id = #{id}
+</delete>
+
+<delete id="deleteReshotelUserBean" parameterType="com.nmg.entity.Reshotel">
+delete from t_reshotel where userid = #{user.id}
+</delete>
+
+
+
+<!-- <update id="updateReshotelBean" parameterType="com.nmg.entity.Reshotel">
+update t_reshotel set id=#{id},imgpath=#{imgpath},name=#{name},price=#{price},
+tel=#{tel},address=#{address},content=#{content},reshotellock=#{reshotellock} where id=#{id}
+</update> -->
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectReshotelBeanCount" resultType="long">
+	select count(*) from t_reshotel
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectReshotelBean" parameterType="com.nmg.entity.Reshotel" resultType="com.nmg.entity.Reshotel">
+   select * from t_reshotel where id=#{id}
+</select>
+	<!-- 检测账户存在 -->
+
+</mapper>
