@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.ManagerDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+<select id="selectManagerBeanList" resultType="com.nmg.entity.Manager">
+   select * from t_manager order by id desc
+</select>
+
+<insert id="insertManagerBean" parameterType="com.nmg.entity.Manager">
+insert into t_manager(id,username,password,managerlock) values(#{id},#{username},#{password},0)
+</insert>
+
+<delete id="deleteManagerBean" parameterType="com.nmg.entity.Manager">
+delete from t_manager where id = #{id}
+</delete>
+
+<update id="updateManagerBean" parameterType="com.nmg.entity.Manager">
+update t_manager set id=#{id},username=#{username},password=#{password} where id=#{id}
+</update>
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectManagerBeanCount" resultType="long">
+	select count(*) from t_manager
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectManagerBean" parameterType="com.nmg.entity.Manager" resultType="com.nmg.entity.Manager">
+   select * from t_manager where username=#{username} and password=#{password}
+</select>
+	<!-- 检测账户存在 -->
+	<select id="selectManagernameBean" parameterType="String" resultType="int">
+		select count(*) from t_manager where username=#{username}
+	</select>
+</mapper>

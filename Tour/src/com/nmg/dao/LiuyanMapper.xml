@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.LiuyanDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+	<resultMap type="com.nmg.entity.Liuyan" id="liuyan">
+		<id property="id" column="id" />
+		<result property="content" column="content" />
+		<result property="recontent" column="recontent" />
+		<result property="createtime" column="createtime" />
+		<result property="recreatetime" column="recreatetime" />
+		<result property="liuyanlock" column="liuyanlock" />
+		<association property="manager" javaType="com.nmg.entity.Manager">
+			<id column="managerid" property="id" />
+			<result column="managername" property="username" />
+		</association>
+		<association property="user" javaType="com.nmg.entity.User">
+			<id column="userid" property="id" />
+			<result column="username" property="username" />
+		</association>
+
+	</resultMap>
+
+<select id="selectLiuyanBeanList" resultMap="liuyan">
+  select a.*,(select username from t_user b where a.userid=b.id) username,
+(select c.username from t_manager c where a.managerid=c.id) managername
+from t_liuyan a order by id desc
+</select>
+
+
+
+<delete id="deleteLiuyanBean" parameterType="com.nmg.entity.Liuyan">
+delete from t_liuyan where id = #{id}
+</delete>
+<delete id="deleteLiuyanUserBean" parameterType="com.nmg.entity.Liuyan">
+delete from t_liuyan where userid = #{user.id}
+</delete>
+
+
+	<insert id="insertLiuyanBean" parameterType="com.nmg.entity.Liuyan">
+insert into t_liuyan(id,content,recontent,createtime,liuyanlock,managerid,userid) 
+values(#{id},#{content},#{recontent},now(),0,#{manager.id},#{user.id})
+</insert> 
+<update id="updateLiuyanBean" parameterType="com.nmg.entity.Liuyan">
+update t_liuyan set id=#{id},content=#{content},recontent=#{recontent},
+liuyanlock=0,managerid=#{manager.id},recreatetime=#{recreatetime} where id=#{id}
+</update>
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectLiuyanBeanCount" resultType="long">
+	select count(*) from t_liuyan
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectLiuyanBean" parameterType="com.nmg.entity.Liuyan" resultType="com.nmg.entity.Liuyan">
+   select * from t_liuyan where id=#{id}
+</select>
+	<!-- 检测账户存在 -->
+
+</mapper>

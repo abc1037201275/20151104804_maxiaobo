@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmg.dao.XianluDao">
+<cache eviction="FiFo" flushInterval="60000" size="512" readOnly="true"></cache>
+<select id="selectXianluBeanList" resultType="com.nmg.entity.Xianlu">
+   select * from t_xianlu order by id desc
+</select>
+
+<insert id="insertXianluBean" parameterType="com.nmg.entity.Xianlu">
+insert into t_xianlu(id,staraddress,endaddress,content,price,createtime,xianlulock) 
+values(#{id},#{staraddress},#{endaddress},#{content},#{price},now(),#{xianlulock})
+</insert>
+
+<delete id="deleteXianluBean" parameterType="com.nmg.entity.Xianlu">
+delete from t_xianlu where id = #{id}
+</delete>
+
+<update id="updateXianluBean" parameterType="com.nmg.entity.Xianlu">
+update t_xianlu set id=#{id},staraddress=#{staraddress},endaddress=#{endaddress},content=#{content},
+price=#{price},createtime=now(),xianlulock=#{xianlulock} where id=#{id}
+</update>
+
+	
+	<!-- 查询记录的总的条数 -->
+	<select id="selectXianluBeanCount" resultType="long">
+	select count(*) from t_xianlu
+	</select>
+	<!-- //查询用户信息 -->
+
+<select id="selectXianluBean" parameterType="com.nmg.entity.Xianlu" resultType="com.nmg.entity.Xianlu">
+   select * from t_xianlu where id=#{id}
+</select>
+	<!-- 检测账户存在 -->
+
+</mapper>
